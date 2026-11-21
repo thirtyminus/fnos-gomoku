@@ -1,0 +1,323 @@
+:root {
+  color-scheme: dark;
+  --bg: #0d1016;
+  --panel: #161b24;
+  --panel-2: #1d232e;
+  --line: rgba(255, 255, 255, 0.09);
+  --text: #e8eaef;
+  --muted: #8b93a1;
+  --brand: #0fdc78;
+  --brand-ink: #04120b;
+  --danger: #e8463a;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color-scheme: light;
+    --bg: #f4f5f7;
+    --panel: #ffffff;
+    --panel-2: #eef0f3;
+    --line: rgba(20, 22, 28, 0.1);
+    --text: #16181d;
+    --muted: #616873;
+    --brand: #05994f;
+    --brand-ink: #ffffff;
+  }
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font: 400 14px/20px -apple-system, "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.app {
+  width: 100%;
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 24px 20px calc(28px + env(safe-area-inset-bottom, 0px));
+}
+
+.top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+h1 {
+  margin: 0;
+  font-size: 22px;
+  line-height: 30px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.sub {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.score { display: flex; gap: 8px; }
+
+.score-item {
+  min-width: 56px;
+  padding: 6px 12px;
+  border-radius: 10px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  text-align: right;
+}
+
+.score-item span {
+  display: block;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.score-item b {
+  display: block;
+  font-size: 18px;
+  line-height: 24px;
+  font-variant-numeric: tabular-nums;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.levels {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 10px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+}
+
+.levels button {
+  padding: 5px 14px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background-color 120ms ease, color 120ms ease;
+}
+
+.levels button:hover { color: var(--text); }
+
+.levels button.active {
+  background: var(--brand);
+  color: var(--brand-ink);
+  font-weight: 600;
+}
+
+.actions { display: flex; gap: 8px; }
+
+button.ghost {
+  padding: 7px 14px;
+  border-radius: 9px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  color: var(--text);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  transition: border-color 120ms ease, opacity 120ms ease;
+}
+
+button.ghost:hover { border-color: rgba(128, 128, 128, 0.5); }
+
+button:disabled { opacity: 0.45; cursor: default; }
+
+.stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.board-wrap {
+  position: relative;
+  flex: none;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
+  background: #d8a95f;
+  touch-action: manipulation;
+}
+
+canvas {
+  display: block;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+canvas.locked { cursor: default; }
+
+.status {
+  margin: 12px 0 0;
+  min-height: 20px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.status.win { color: var(--brand); }
+.status.lose { color: var(--danger); }
+
+.rank {
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+}
+
+.rank h2 {
+  margin: 0 0 8px;
+  font-size: 12px;
+  line-height: 18px;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.rank ul { margin: 0; padding: 0; list-style: none; }
+
+.rank li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 4px 0;
+  font-size: 13px;
+  line-height: 20px;
+  font-variant-numeric: tabular-nums;
+}
+
+.rank li .who {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.rank li .val { color: var(--muted); flex: none; }
+
+.rank-empty { color: var(--muted); justify-content: flex-start; }
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(6, 8, 12, 0.6);
+  backdrop-filter: blur(6px);
+  z-index: 10;
+}
+
+.overlay[hidden] { display: none; }
+
+.dialog {
+  width: 100%;
+  max-width: 300px;
+  padding: 24px;
+  border-radius: 16px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4);
+  text-align: center;
+}
+
+.dialog h2 {
+  margin: 0 0 8px;
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 600;
+}
+
+.dialog p {
+  margin: 0 0 20px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.dialog-actions { display: flex; gap: 8px; justify-content: center; }
+
+button.primary {
+  padding: 8px 18px;
+  border: 0;
+  border-radius: 9px;
+  background: var(--brand);
+  color: var(--brand-ink);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* 手机竖屏：压缩留白，把宽度全给棋盘 */
+@media (max-width: 480px) {
+  .app { padding: 12px 10px calc(16px + env(safe-area-inset-bottom, 0px)); }
+  h1 { font-size: 20px; line-height: 28px; }
+  .toolbar { flex-wrap: wrap; margin-bottom: 12px; }
+  .stage { margin-bottom: 12px; }
+  .status { margin-top: 8px; }
+}
+
+/* 宽屏（桌面窗口、手机横屏）：左右分栏，棋盘吃满可用高度 */
+@media (min-width: 700px) {
+  .app {
+    max-width: 820px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 216px;
+    grid-template-areas:
+      "board head"
+      "board tools"
+      "board rank";
+    column-gap: 20px;
+    align-items: start;
+  }
+  .top {
+    grid-area: head;
+    flex-direction: column;
+    align-items: stretch;
+    margin-bottom: 12px;
+  }
+  .toolbar { grid-area: tools; flex-direction: column; align-items: stretch; }
+  .levels { justify-content: space-between; }
+  .levels button { flex: 1; padding: 6px 0; }
+  .actions button { flex: 1; }
+  .stage { grid-area: board; margin-bottom: 0; }
+  .rank { grid-area: rank; }
+}
+
+/* 窗口偏矮时压缩头部，把高度让给棋盘 */
+@media (max-height: 640px) {
+  .app { padding: 14px 16px calc(16px + env(safe-area-inset-bottom, 0px)); }
+  .top { margin-bottom: 10px; }
+  h1 { font-size: 18px; line-height: 24px; }
+  .toolbar { margin-bottom: 10px; }
+  .stage { margin-bottom: 12px; }
+  .status { margin-top: 8px; }
+}

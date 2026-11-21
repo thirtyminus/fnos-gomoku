@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>五子棋</title>
+<link rel="stylesheet" href="/app/gomoku/style.css">
+</head>
+<body>
+<main class="app">
+  <header class="top">
+    <div>
+      <h1>五子棋</h1>
+      <p class="sub">15×15 · 你执黑先行</p>
+    </div>
+    <div class="score">
+      <div class="score-item">
+        <span>胜</span>
+        <b id="wins">0</b>
+      </div>
+      <div class="score-item">
+        <span>负</span>
+        <b id="losses">0</b>
+      </div>
+    </div>
+  </header>
+
+  <div class="toolbar">
+    <div class="levels" role="group" aria-label="难度">
+      <button type="button" data-level="easy">简单</button>
+      <button type="button" data-level="normal">普通</button>
+      <button type="button" data-level="hard">困难</button>
+    </div>
+    <div class="actions">
+      <button type="button" id="undo" class="ghost">悔棋</button>
+      <button type="button" id="restart" class="ghost">重开</button>
+    </div>
+  </div>
+
+  <div class="stage">
+    <div class="board-wrap">
+      <canvas id="board"></canvas>
+    </div>
+    <p id="status" class="status" role="status">点击交叉点落子</p>
+  </div>
+
+  <section class="rank" aria-label="全服战绩">
+    <h2>全服战绩</h2>
+    <ul id="rank-list"><li class="rank-empty">还没有人下过棋</li></ul>
+  </section>
+</main>
+
+<div id="overlay" class="overlay" hidden>
+  <div class="dialog">
+    <h2 id="result-title">你赢了</h2>
+    <p id="result-desc"></p>
+    <div class="dialog-actions">
+      <button type="button" id="again" class="primary">再来一局</button>
+      <button type="button" id="close" class="ghost">看看棋盘</button>
+    </div>
+  </div>
+</div>
+
+<script src="/app/gomoku/game.js"></script>
+</body>
+</html>

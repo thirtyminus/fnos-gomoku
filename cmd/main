@@ -1,0 +1,52 @@
+#!/bin/bash
+
+APP_BIN="${TRIM_APPDEST}/gomoku-server"
+PID_FILE="${TRIM_PKGVAR}/app.pid"
+LOG_FILE="${TRIM_PKGVAR}/server.log"
+SOCK_FILE="${TRIM_APPDEST}/app.sock"
+
+is_running() {
+  [ -r "${PID_FILE}" ] || return 1
+  pid=$(head -n 1 "${PID_FILE}" | tr -d '[:space:]')
+  [ -n "$pid" ] && kill -0 "$pid" 2>/dev/null
+}
+
+case "$1" in
+  start)
+    if is_running; then
+      exit 0
+    fi
+    rm -f "${SOCK_FILE}"
+    nohup "${APP_BIN}" >> "${LOG_FILE}" 2>&1 &
+    printf "%s" "$!" > "${PID_FILE}"
+    for _ in $(seq 1 20); do
+      if [ -S "${SOCK_FILE}" ] && is_running; then
+        exit 0
+      fi
+      sleep 0.2
+    done
+    echo "backend failed to start, see ${LOG_FILE}" > "$TRIM_TEMP_LOGFILE"
+    exit 1
+    ;;
+  stop)
+    if is_running; then
+      kill -TERM "$pid" 2>/dev/null
+      for _ in $(seq 1 25); do
+        is_running || break
+        sleep 0.2
+      done
+      is_running && kill -KILL "$pid" 2>/dev/null
+    fi
+    rm -f "${PID_FILE}" "${SOCK_FILE}"
+    exit 0
+    ;;
+  status)
+    if is_running && [ -S "${SOCK_FILE}" ]; then
+      exit 0
+    fi
+    exit 3
+    ;;
+  *)
+    exit 1
+    ;;
+esac
