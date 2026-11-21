@@ -5,7 +5,7 @@ desc=人机对弈的五子棋小游戏，三档难度，战绩保存在本机。
 source=thirdparty
 platform=x86
 
-maintainer=yangyang
+maintainer=thirtyminus
 
 os_min_version=1.2.0
 
